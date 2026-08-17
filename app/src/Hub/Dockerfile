@@ -1,0 +1,20 @@
+# ---- Build Stage ----
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+ENV DOTNET_EnableWriteXorExecute=0
+WORKDIR /src
+
+COPY src/Hub/Hub.csproj Hub/
+RUN dotnet restore Hub/Hub.csproj
+
+COPY src/Hub/ Hub/
+WORKDIR /src/Hub
+RUN dotnet publish -c Release -o /app/publish --no-restore
+
+# ---- Runtime Stage ----
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Hub.dll"]

@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.userprefs
+bin/
+obj/
+*.suo
+*.sln.iml
+.idea/
+
+# IDE
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
